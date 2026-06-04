@@ -3,10 +3,10 @@
     "anchor": {
         "block": {
             "height": 7159,
-            "blkid": "<block_hash>"
+            "blkid": "0000000893d0daa7fa76186c7c26ace7f50b631eb0124639fed18986415fbdab"
         },
-        "next_target": 0,
-        "epoch_start_timestamp": 0,
+        "next_target": 490175168,
+        "epoch_start_timestamp": 1780347064,
         "network": "signet"
     },
     "subprotocols": [
@@ -65,7 +65,7 @@
                 "sequencer_predicate": "AlwaysAccept",
                 "checkpoint_predicate": "AlwaysAccept",
                 "genesis_l1_height": 7159,
-                "genesis_ol_blkid": "00000000000000000000000000000000000000000000000000000000₀₀₀₀₀₀"
+                "genesis_ol_blkid": "0000000000000000000000000000000000000000000000000000000000000000"
             }
         },
         {
