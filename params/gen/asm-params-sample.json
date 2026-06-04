@@ -1,0 +1,87 @@
+{
+    "magic": "ALPN",
+    "anchor": {
+        "block": {
+            "height": 101,
+            "blkid": "<block_hash>"
+        },
+        "next_target": 0,
+        "epoch_start_timestamp": 0,
+        "network": "signet"
+    },
+    "subprotocols": [
+        {
+            "Admin": {
+                "strata_administrator": {
+                    "keys": [
+                        "02b49092f76d06f8002e0b7f1c63b5058db23fd4465b4f6954b53e1f352a04754d",
+                        "021e62d54af30569fd7269c14b6766f74d85ea00c911c4e1a423d4ba2ae4c34dc4",
+                        "02a4d869ccd09c470f8f86d3f1b0997fa2695933aaea001875b9db145ae9c1f4ba"
+                    ],
+                    "threshold": 2
+                },
+                "strata_sequencer_manager": {
+                    "keys": [
+                        "02b49092f76d06f8002e0b7f1c63b5058db23fd4465b4f6954b53e1f352a04754d",
+                        "021e62d54af30569fd7269c14b6766f74d85ea00c911c4e1a423d4ba2ae4c34dc4",
+                        "02a4d869ccd09c470f8f86d3f1b0997fa2695933aaea001875b9db145ae9c1f4ba"
+                    ],
+                    "threshold": 2
+                },
+                "alpen_administrator": {
+                    "keys": [
+                        "02b49092f76d06f8002e0b7f1c63b5058db23fd4465b4f6954b53e1f352a04754d",
+                        "021e62d54af30569fd7269c14b6766f74d85ea00c911c4e1a423d4ba2ae4c34dc4",
+                        "02a4d869ccd09c470f8f86d3f1b0997fa2695933aaea001875b9db145ae9c1f4ba"
+                    ],
+                    "threshold": 2
+                },
+                "strata_security_council": {
+                    "keys": [
+                        "02b49092f76d06f8002e0b7f1c63b5058db23fd4465b4f6954b53e1f352a04754d",
+                        "021e62d54af30569fd7269c14b6766f74d85ea00c911c4e1a423d4ba2ae4c34dc4",
+                        "02a4d869ccd09c470f8f86d3f1b0997fa2695933aaea001875b9db145ae9c1f4ba"
+                    ],
+                    "threshold": 2
+                },
+                "confirmation_depths": {
+                    "strata_admin_multisig_update": 144,
+                    "strata_seq_manager_multisig_update": 144,
+                    "alpen_admin_multisig_update": 144,
+                    "strata_security_council_multisig_update": 144,
+                    "operator_update": 144,
+                    "sequencer_update": 144,
+                    "ol_stf_vk_update": 144,
+                    "asm_stf_vk_update": 144,
+                    "ee_stf_vk_update": 144,
+                    "defcon3": 144,
+                    "safe_harbour_address_update": 144
+                },
+                "max_seqno_gap": 10
+            }
+        },
+        {
+            "Checkpoint": {
+                "sequencer_predicate": "AlwaysAccept",
+                "checkpoint_predicate": "AlwaysAccept",
+                "genesis_l1_height": 101,
+                "genesis_ol_blkid": "0000000000000000000000000000000000000000000000000000000000000000"
+            }
+        },
+        {
+            "Bridge": {
+                "operators": [
+                    "029effefe15777e7089762079f895f2f0636035052d5124fbca553f04752e48a8a",
+                    "022d2eefc1957d519357a1f69b243a2be8cb8ed1d5004eff6c2a0dc15136e96e41",
+                    "02887e79c5945c94e0715de84d47409d2cd46f4efead26bac89d42d26f934fd898",
+                    "02254f90abb83bca97b3af62371e306d2cb9fc6062258032bd28a2f61ba189939d"
+                ],
+                "denomination": 1000000000,
+                "assignment_duration": 10,
+                "operator_fee": 100000000,
+                "recovery_delay": 1008,
+                "safe_harbour_address": "040f0c8db753acbd17343a39c2f3f4e35e4be6da749f9e35137ab220e7b238a667"
+            }
+        }
+    ]
+}
