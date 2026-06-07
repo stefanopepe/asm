@@ -13,7 +13,8 @@ use jsonrpsee::{
     types::{ErrorObject, ErrorObjectOwned},
 };
 use ssz::{Decode, Encode};
-use strata_asm_proof_db::{ProofDb, SledMohoStateDb, SledProofDb};
+use strata_asm_moho_storage::SledMohoStateDb;
+use strata_asm_proof_db::{ProofDb, SledProofDb};
 use strata_asm_proof_types::{AsmProof, L1Range, MohoProof};
 use strata_asm_proto_bridge_v1::{AssignmentEntry, BridgeV1State, DepositEntry};
 use strata_asm_proto_bridge_v1_txs::BRIDGE_V1_SUBPROTOCOL_ID;
