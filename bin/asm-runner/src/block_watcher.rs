@@ -15,7 +15,7 @@ use bitcoin::Block;
 use bitcoincore_zmq::{Message, SocketMessage, subscribe_async_wait_handshake};
 use bitcoind_async_client::{Client, traits::Reader};
 use futures::StreamExt;
-use strata_asm_proof_types::{L1Range, ProofId};
+use strata_asm_prover_types::{L1Range, ProofId};
 use strata_asm_worker::AsmWorkerHandle;
 use strata_btc_types::BlockHashExt;
 use strata_identifiers::L1BlockCommitment;
