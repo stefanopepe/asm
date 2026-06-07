@@ -3,7 +3,8 @@
 use std::sync::Arc;
 
 use anyhow::Result;
-use asm_storage::{AsmManifestMmrDb, AsmStateDb, ExportEntriesDb};
+use asm_storage::{AsmManifestMmrDb, AsmStateDb};
+use strata_asm_moho_storage::ExportEntriesDb;
 
 use crate::config::DatabaseConfig;
 

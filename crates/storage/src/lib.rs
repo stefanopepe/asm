@@ -3,15 +3,16 @@
 //! Replaces alpen's `strata-state`, `strata-storage`, and `strata-db-store-sled`
 //! with a self-contained implementation that has zero alpen dependencies.
 //!
-//! Three storage backends:
+//! Two storage backends:
 //! - [`AsmStateDb`] — anchor states + aux data, keyed by L1 block commitment
 //! - [`AsmManifestMmrDb`] — manifest hash MMR (append, prove, query)
-//! - [`ExportEntriesDb`] — per-container export entries, indexed for proof generation
+//!
+//! Per-container export entries moved to `strata-asm-moho-storage`, persisted
+//! by the Moho worker alongside the `MohoState` whose `ExportState` MMR they
+//! mirror.
 
-mod export_entries;
 mod mmr;
 mod state;
 
-pub use export_entries::ExportEntriesDb;
 pub use mmr::AsmManifestMmrDb;
 pub use state::AsmStateDb;

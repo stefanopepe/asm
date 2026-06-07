@@ -19,9 +19,10 @@ use bitcoin::BlockHash;
 use bitcoind_async_client::{Client, error::ClientError, traits::Reader};
 use moho_types::MohoState;
 use strata_asm_common::{AnchorState, AsmLogEntry};
-use strata_asm_moho_storage::SledMohoStateDb;
+use strata_asm_moho_storage::{ExportEntriesDb, SledMohoStateDb};
 use strata_asm_moho_worker::{
-    AsmStateProvider, L1ProviderContext, MohoStateStore, MohoWorkerError, MohoWorkerResult,
+    AsmStateProvider, ExportEntryStore, L1ProviderContext, MohoStateStore, MohoWorkerError,
+    MohoWorkerResult,
 };
 use strata_asm_worker::AsmState;
 use strata_btc_types::{BlockHashExt, L1BlockIdBitcoinExt};
@@ -43,6 +44,9 @@ pub(crate) struct MohoWorkerContextImpl {
     state_db: Arc<AsmStateDb>,
     /// Persistence for the derived per-block Moho states.
     moho_state_db: SledMohoStateDb,
+    /// Persistence for the per-container export-entry leaves the Moho state's
+    /// `ExportState` MMR commits to.
+    export_entries_db: ExportEntriesDb,
 }
 
 impl MohoWorkerContextImpl {
@@ -52,6 +56,7 @@ impl MohoWorkerContextImpl {
         retry: &RetryConfig,
         state_db: Arc<AsmStateDb>,
         moho_state_db: SledMohoStateDb,
+        export_entries_db: ExportEntriesDb,
     ) -> Self {
         Self {
             runtime_handle,
@@ -60,6 +65,7 @@ impl MohoWorkerContextImpl {
             rpc_max_retries: retry.max_retries,
             state_db,
             moho_state_db,
+            export_entries_db,
         }
     }
 
@@ -129,6 +135,20 @@ impl MohoStateStore for MohoWorkerContextImpl {
     ) -> MohoWorkerResult<()> {
         self.moho_state_db
             .store(*blockid, state.clone())
+            .map_err(|e| MohoWorkerError::Storage(e.to_string()))
+    }
+}
+
+impl ExportEntryStore for MohoWorkerContextImpl {
+    fn append_export_entry(
+        &self,
+        container_id: u8,
+        height: u32,
+        entry: [u8; 32],
+    ) -> MohoWorkerResult<()> {
+        self.export_entries_db
+            .append(container_id, height, entry)
+            .map(|_index| ())
             .map_err(|e| MohoWorkerError::Storage(e.to_string()))
     }
 }
