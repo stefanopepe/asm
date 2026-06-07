@@ -16,11 +16,12 @@ use bitcoincore_zmq::{Message, SocketMessage, subscribe_async_wait_handshake};
 use bitcoind_async_client::{Client, traits::Reader};
 use futures::StreamExt;
 use strata_asm_prover_types::{L1Range, ProofId};
+use strata_asm_prover_worker::ProverWorkerHandle;
 use strata_asm_worker::AsmWorkerHandle;
 use strata_btc_types::BlockHashExt;
 use strata_identifiers::L1BlockCommitment;
 use strata_tasks::ShutdownGuard;
-use tokio::{sync::mpsc, time::timeout};
+use tokio::time::timeout;
 use tracing::{debug, error, info, warn};
 
 use crate::config::BitcoinConfig;
@@ -37,7 +38,7 @@ pub(crate) async fn drive_asm_from_bitcoin(
     bitcoin_client: Arc<Client>,
     asm_worker: Arc<AsmWorkerHandle>,
     start_height: u64,
-    proof_tx: Option<mpsc::UnboundedSender<ProofId>>,
+    proof_handle: Option<ProverWorkerHandle>,
     shutdown: ShutdownGuard,
 ) -> Result<()> {
     info!(%start_height, "starting ASM block watcher");
@@ -105,7 +106,7 @@ pub(crate) async fn drive_asm_from_bitcoin(
             for height in cursor..received_height {
                 match fetch_block_at_height(&bitcoin_client, height).await {
                     Ok(fetched) => {
-                        if let Err(err) = submit_block(&asm_worker, &proof_tx, fetched).await {
+                        if let Err(err) = submit_block(&asm_worker, &proof_handle, fetched).await {
                             error!(%height, ?err, "failed to submit backfill block");
                             // Stop backfilling on failure so we don't hand the
                             // worker a gap. The next ZMQ event will retry.
@@ -120,7 +121,7 @@ pub(crate) async fn drive_asm_from_bitcoin(
             }
         }
 
-        if let Err(err) = submit_block(&asm_worker, &proof_tx, block).await {
+        if let Err(err) = submit_block(&asm_worker, &proof_handle, block).await {
             error!(%received_height, ?err, "failed to submit block from ZMQ");
         }
         cursor = received_height + 1;
@@ -143,7 +144,7 @@ async fn fetch_block_at_height(client: &Client, height: u64) -> Result<Block> {
 /// Submit a block to the ASM worker and, optionally, enqueue a proof request.
 async fn submit_block(
     asm_worker: &AsmWorkerHandle,
-    proof_tx: &Option<mpsc::UnboundedSender<ProofId>>,
+    proof_handle: &Option<ProverWorkerHandle>,
     block: Block,
 ) -> Result<()> {
     let height = block.bip34_block_height().unwrap_or(0);
@@ -158,13 +159,13 @@ async fn submit_block(
 
     debug!(%height, %hash, "submitted block to ASM worker");
 
-    if let Some(tx) = proof_tx {
+    if let Some(handle) = proof_handle {
         let asm_proof_id = ProofId::Asm(L1Range::single(commitment));
-        if let Err(err) = tx.send(asm_proof_id) {
+        if let Err(err) = handle.request_proof(asm_proof_id) {
             warn!(%height, %hash, ?err, "failed to enqueue ASM proof request");
         }
         let moho_proof_id = ProofId::Moho(commitment);
-        if let Err(err) = tx.send(moho_proof_id) {
+        if let Err(err) = handle.request_proof(moho_proof_id) {
             warn!(%height, %hash, ?err, "failed to enqueue Moho proof request");
         }
     }
