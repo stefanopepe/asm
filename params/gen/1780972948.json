@@ -2,11 +2,11 @@
     "magic": "ALPN",
     "anchor": {
         "block": {
-            "height": 7159,
-            "blkid": "0000000893d0daa7fa76186c7c26ace7f50b631eb0124639fed18986415fbdab"
+            "height": 8395,
+            "blkid": "0000000fac7a43f235c9bad64e7db2f154c9a4c52d73bfe2972cea8cd0924ca4"
         },
-        "next_target": 490175168,
-        "epoch_start_timestamp": 1780347064,
+        "next_target": 487979077,
+        "epoch_start_timestamp": 1780826097,
         "network": "signet"
     },
     "subprotocols": [
@@ -64,7 +64,7 @@
             "Checkpoint": {
                 "sequencer_predicate": "AlwaysAccept",
                 "checkpoint_predicate": "AlwaysAccept",
-                "genesis_l1_height": 7159,
+                "genesis_l1_height": 8395,
                 "genesis_ol_blkid": "0000000000000000000000000000000000000000000000000000000000000000"
             }
         },

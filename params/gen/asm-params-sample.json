@@ -2,7 +2,7 @@
     "magic": "ALPN",
     "anchor": {
         "block": {
-            "height": 7159,
+            "height": 8395,
             "blkid": "<block_hash>"
         },
         "next_target": 0,
@@ -64,7 +64,7 @@
             "Checkpoint": {
                 "sequencer_predicate": "AlwaysAccept",
                 "checkpoint_predicate": "AlwaysAccept",
-                "genesis_l1_height": 7159,
+                "genesis_l1_height": 8395,
                 "genesis_ol_blkid": "00000000000000000000000000000000000000000000000000000000₀₀₀₀₀₀"
             }
         },
